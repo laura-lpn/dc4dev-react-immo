@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react"
 import AdvertList from "./components/AdvertList"
 import AdvertPaginate from "./components/AdvertPaginate"
-import FormAdvert from "./components/FormAdvert"
+import AdvertService  from "./services/advert.service"
+import { Link } from "react-router-dom"
 
 function Advert(){    
     const [totalCount, setTotalCount] = useState(0)
     const [advertList, setAdvertList] = useState([])
 
     useEffect(() => {
-        console.log("component did mount")
-
         fetchAllAdverts()
 
         return () => {
@@ -17,21 +16,23 @@ function Advert(){
         }
     }, [])
 
-    const fetchAllAdverts = () => {
-        fetch(`${import.meta.env.VITE_APP_API_URL}/adverts`)
-        .then(res => res.json())
-        .then(responseData => {
-            console.log(responseData)
-            setTotalCount(responseData.totalCount)
-            setAdvertList(responseData.data)
-        })
+    const fetchAllAdverts = async() => {
+       try {
+            const { data, totalCount } = await AdvertService.findAll()
+            setAdvertList(data)
+            setTotalCount(totalCount)
+       } catch (error) {
+            console.log(error)
+       }
     }
     
    return (
     <div>
-        <FormAdvert fetchAllAdverts={fetchAllAdverts} />
+        <h1>Advert List</h1>
+
+        <Link to="/adverts/create">Ajouter</Link>
         
-        <AdvertList advertList={advertList} />
+        <AdvertList advertList={advertList}  fetchAllAdverts={fetchAllAdverts} />
 
         <AdvertPaginate totalCount={totalCount} />
     </div>

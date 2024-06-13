@@ -1,19 +1,35 @@
+import { Link } from "react-router-dom";
+import { AdvertType } from "../types/advert";
+import AdvertService from "../services/advert.service";
+
 type PropsAdvertList = {
-    advertList: AdvertType[]
+    advertList: AdvertType[],
+    fetchAllAdverts: () => void
 }
 
-type AdvertType = {
-    id: number
-    title: string
-    nb_rooms: number
-    createdAt: string
-}
+const AdvertList = ({ advertList, fetchAllAdverts }: PropsAdvertList) => {
+    const handleDelete = async (id: number) => {
+        try {
+            await AdvertService.remove(id)
+            fetchAllAdverts()
+        } catch (error) {
+            console.log("handleDelete error : ", error)
+        }
+    }
 
-const AdvertList = ({ advertList }: PropsAdvertList) => {
     return ( 
         <ul>
             {advertList.map((advert: AdvertType) => (
-                <li key={advert.id}>{advert.title}</li>
+                <li key={advert.id}>{advert.title}
+                    
+                    <Link to={`/adverts/${advert.id}`}>
+                        Learn more
+                    </Link>
+
+                    <button onClick={() => handleDelete(advert.id)}>
+                        delete
+                    </button>
+                </li>
             ))}
         </ul>
      );
