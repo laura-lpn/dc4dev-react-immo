@@ -15,9 +15,14 @@ const findOne = async (id: string) => {
 }
 
 const create = async (credentials: CreateAdvertDto) => {
+    /* utm */
+    // Get access token to local storage
+    const access_token = localStorage.getItem("access_token") as string
+    
     const request = await fetch(ENDPOINT, {
         method: "POST",
         headers: {
+            "Authorization": `Bearer ${JSON.parse(access_token)}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(credentials),

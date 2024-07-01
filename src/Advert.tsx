@@ -31,7 +31,9 @@ function Advert(){
         <h1>Advert List</h1>
 
         <Link to="/adverts/create">Ajouter</Link>
+
         <Link to="/auth/signup">Signup</Link>
+        <Link to="/auth/signin">signin</Link>
         
         <AdvertList advertList={advertList}  fetchAllAdverts={fetchAllAdverts} />
 
