@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import AdvertService from "../services/advert.service";
 import { AdvertType } from "../types/advert";
 import { useNavigate, useParams } from "react-router-dom";
+import CategoryService from "../services/category.service";
+import { CategoryType } from "../types/category";
 
 const FormAdvert = () => {
   const [credentials, setCredentials] = useState<AdvertType>({
@@ -10,51 +12,65 @@ const FormAdvert = () => {
     nb_rooms: 0,
     price: 0,
     surface: 0,
+    category: { id: 0 },
   });
+  const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
   const navigate = useNavigate();
   const { id } = useParams();
 
   useEffect(() => {
     console.log("FormAdvert component did mount : ", id);
     handleFetchOneAdvert();
+    fetchAllCategories();
   }, [id]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { value, name } = e.target;
     setCredentials({ ...credentials, [name]: value });
   };
 
+  const fetchAllCategories = async () => {
+    try {
+      const data = await CategoryService.findAll();
+      setCategoryList(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleFetchOneAdvert = async () => {
-    if(!id) return
+    if (!id) return;
 
     try {
       const data = await AdvertService.findOne(id);
       console.log("handleFetchOneAdvert data : ", data);
-      setCredentials({...data});
+      setCredentials({ ...data });
     } catch (error) {
-      console.log("handleFetchOneAdvert error : ", error); 
+      console.log("handleFetchOneAdvert error : ", error);
     }
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    let redirectPath = ""
+    let redirectPath = "";
 
     try {
-      if(!id){
+      if (!id) {
         const data = await AdvertService.create(credentials);
-        redirectPath = `/adverts/${data.id}`
+        redirectPath = `/adverts/${data.id}`;
       } else {
         await AdvertService.update(credentials, id);
-        redirectPath = `/adverts/${id}`
+        redirectPath = `/adverts/${id}`;
       }
-        
+
       navigate(redirectPath);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <div>
@@ -106,7 +122,19 @@ const FormAdvert = () => {
             value={credentials.surface}
           />
         </div>
-        <input type="submit" value={id? "Update" : "Create"} />
+        <select
+          name="category"
+          onChange={handleChange}
+          value={credentials.category?.id}
+        >
+          {categoryList.map((category: CategoryType) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
+        </select>
+
+        <input type="submit" value={id ? "Update" : "Create"} />
       </form>
     </div>
   );

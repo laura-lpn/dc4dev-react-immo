@@ -1,6 +1,6 @@
-import { AdvertType, CreateAdvertDto } from "../types/advert";
+import { CategoryType, CreateCategoryDto } from "../types/category";
 
-const ENDPOINT = `${import.meta.env.VITE_APP_API_URL}/adverts`;
+const ENDPOINT = `${import.meta.env.VITE_APP_API_URL}/categories`;
 
 const findAll = async () => {
   const request = await fetch(ENDPOINT);
@@ -14,7 +14,7 @@ const findOne = async (id: string) => {
   return await request.json();
 };
 
-const create = async (credentials: CreateAdvertDto) => {
+const create = async (credentials: CreateCategoryDto) => {
   /* utm */
   // Get access token to local storage
   const access_token = localStorage.getItem("access_token") as string;
@@ -42,7 +42,7 @@ const remove = async (id: number) => {
   return await request.json();
 };
 
-const update = async (credentials: AdvertType, id: string) => {
+const update = async (credentials: CategoryType, id: string) => {
   const access_token = localStorage.getItem("access_token") as string;
   const request = await fetch(`${ENDPOINT}/${id}`, {
     method: "PATCH",
@@ -56,7 +56,7 @@ const update = async (credentials: AdvertType, id: string) => {
   return await request.json();
 };
 
-const AdvertService = {
+const CategoryService = {
   findAll,
   findOne,
   create,
@@ -64,4 +64,4 @@ const AdvertService = {
   update,
 };
 
-export default AdvertService;
+export default CategoryService;

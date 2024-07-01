@@ -47,22 +47,6 @@ const Signup = () => {
             </form>
         </div>
     );
-
-    return (
-        <div>
-            <h1>Signup</h1>
-
-            <form>
-                <div>
-                    <input type="email" name="email" placeholder="email" />
-                </div>
-                <div>
-                    <input type="password" name="password" placeholder="password" />
-                </div>
-                <input type="submit" value="Signup" />
-            </form>
-        </div>
-    );
 }
 
 export default Signup;
