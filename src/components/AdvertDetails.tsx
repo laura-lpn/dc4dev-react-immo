@@ -22,7 +22,6 @@ const AdvertDetails = () => {
       console.log("fetchOneAdvert error : ", error);
     }
   };
-  console.log("advert : ", advert);
 
   return (
     <div>
