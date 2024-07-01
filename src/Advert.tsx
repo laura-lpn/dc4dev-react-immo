@@ -30,10 +30,10 @@ function Advert(){
     <div>
         <h1>Advert List</h1>
 
-        <Link to="/adverts/create">Ajouter</Link>
+        <Link to="/adverts/create">Ajouter</Link><br/>
 
-        <Link to="/auth/signup">Signup</Link>
-        <Link to="/auth/signin">signin</Link>
+        <Link to="/auth/signup">Signup</Link><br/>
+        <Link to="/auth/signin">signin</Link><br/>
         
         <AdvertList advertList={advertList}  fetchAllAdverts={fetchAllAdverts} />
 
