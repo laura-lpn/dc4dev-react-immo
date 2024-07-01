@@ -49,7 +49,7 @@ function Advert() {
       <br />
       <Link to="/auth/signup">Signup</Link>
       <br />
-      <Link to="/auth/signin">signin</Link>
+      <Link to="/auth/signin">Signin</Link>
       <br />
 
       <h2>Liste des categories</h2>
